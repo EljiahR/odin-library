@@ -27,35 +27,54 @@ addToLibrary('Title', 'Author', 1, false);
 
 const cardSection = document.querySelector('.book-cards');
 
-myLibrary.forEach(book =>{
-    let card = document.createElement("div");
-    card.classList.add('book-card');
-    let title = document.createElement('h2');
-    title.innerText = book.title;
-    let author = document.createElement('h3');
-    author.innerText = book.author;
-    let pages = document.createElement('p');
-    pages.innerText = `Pages: ${book.pages}`;
-    let readStatus = document.createElement('p');
-    if(book.read){
-        readStatus.innerText = "Read"
-    }else{
-        readStatus.innerText = "Not Read"
+function removeAllChildNodes(parent){
+    while(parent.firstChild){
+        parent.removeChild(parent.firstChild);
     }
-    card.appendChild(title);
-    card.appendChild(author);
-    card.appendChild(pages);
-    card.appendChild(readStatus);
-    cardSection.appendChild(card);
+}
 
-})
+let refreshLibrary = ()=>{
+    removeAllChildNodes(cardSection)
+    myLibrary.forEach(book =>{
+        let card = document.createElement("div");
+        card.classList.add('book-card');
+        let title = document.createElement('h2');
+        title.innerText = book.title;
+        let author = document.createElement('h3');
+        author.innerText = book.author;
+        let pages = document.createElement('p');
+        pages.innerText = `Pages: ${book.pages}`;
+        let readStatus = document.createElement('p');
+        if(book.read){
+            readStatus.innerText = "Read"
+        }else{
+            readStatus.innerText = "Not Read"
+        }
+        card.appendChild(title);
+        card.appendChild(author);
+        card.appendChild(pages);
+        card.appendChild(readStatus);
+        cardSection.appendChild(card);
+    
+    })
+}
+refreshLibrary();
+
 const toggleOverlay = () =>{
     if(overlay.classList.contains('hidden')){
         overlay.classList.remove('hidden');
     }else{
         overlay.classList.add('hidden')
     }
+    formTitle.value ='';
+    formAuthor.value ='';
+    formNumOfPages.value = '';
 }
+
+let formTitle = document.getElementById('title');
+let formAuthor = document.getElementById('author');
+let formNumOfPages = document.getElementById('pages');
+let formReadStatus = document.getElementById('read-status');
 
 const overlay = document.querySelector('#overlay')
 const addBookButton = document.querySelector('#add-book');
@@ -67,3 +86,12 @@ overlay.addEventListener('click', function(e){
         toggleOverlay();
     }
 });
+
+const bookForm = document.getElementById('add-book-form');
+bookForm.addEventListener('submit', (e) =>{
+    e.preventDefault();
+    addToLibrary(formTitle.value, formAuthor.value, formNumOfPages.value, formReadStatus.value)
+    refreshLibrary();
+    toggleOverlay();
+    
+})
