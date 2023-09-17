@@ -9,6 +9,9 @@ function Book(title, author, pages, read){
 Book.prototype.info = function(){
     return this.title
 }
+Book.prototype.toggleRead = function(){
+    this.read = !this.read
+}
 
 function addToLibrary(title, author, pages, read){
     let newBook = new Book(title, author, pages, read)
@@ -43,17 +46,27 @@ function refreshLibrary() {
         deleteButton.id = `delete${myLibrary.indexOf(book)}`
         deleteButton.classList.add("btn")
         deleteButton.classList.add("delete-btn")
+        let readToggleButton = document.createElement('button');
+        readToggleButton.innerText = "Toggle Read Status"
+        readToggleButton.id = `read${myLibrary.indexOf(book)}`
+        readToggleButton.classList.add("btn")
+        readToggleButton.classList.add("read-btn")
        
         card.appendChild(title);
         card.appendChild(author);
         card.appendChild(pages);
         card.appendChild(readStatus);
         card.appendChild(deleteButton);
+        card.appendChild(readToggleButton);
         card.dataset.key = myLibrary.indexOf(book);
         cardSection.appendChild(card);
         deleteButton.addEventListener('click', function(e){
             e.stopPropagation()
             deleteBook(e.target.id.charAt(6));
+        });
+        readToggleButton.addEventListener('click', function(e){
+            e.stopPropagation()
+            toggleReadStatus(e.target.id.charAt(4));
         });
     })
 }
@@ -71,6 +84,11 @@ function toggleOverlay(){
 
 function deleteBook(index){
     myLibrary.splice(index,1)
+    refreshLibrary();
+}
+
+function toggleReadStatus(index){
+    myLibrary[index].toggleRead();
     refreshLibrary();
 }
 
