@@ -10,22 +10,10 @@ Book.prototype.info = function(){
     return this.title
 }
 
-
-
-const myLibrary = [];
-
 function addToLibrary(title, author, pages, read){
     let newBook = new Book(title, author, pages, read)
     myLibrary.push(newBook)
 }
-
-addToLibrary('Don Quixote', 'Miguel De Cervantes Saavedra', 1072, false);
-addToLibrary('The Hobbit', 'J. R. R. Tolkien', 300, false);
-addToLibrary('The Lion, the Witch and the Wardrobe', 'C. S. Lewis', 208, true);
-addToLibrary('Title', 'Author', 1, false);
-
-
-const cardSection = document.querySelector('.book-cards');
 
 function removeAllChildNodes(parent){
     while(parent.firstChild){
@@ -33,7 +21,7 @@ function removeAllChildNodes(parent){
     }
 }
 
-let refreshLibrary = ()=>{
+function refreshLibrary() {
     removeAllChildNodes(cardSection)
     myLibrary.forEach(book =>{
         let card = document.createElement("div");
@@ -50,17 +38,27 @@ let refreshLibrary = ()=>{
         }else{
             readStatus.innerText = "Not Read"
         }
+        let deleteButton = document.createElement('button');
+        deleteButton.innerText = "Delete Book"
+        deleteButton.id = `delete${myLibrary.indexOf(book)}`
+        deleteButton.classList.add("btn")
+        deleteButton.classList.add("delete-btn")
+       
         card.appendChild(title);
         card.appendChild(author);
         card.appendChild(pages);
         card.appendChild(readStatus);
+        card.appendChild(deleteButton);
+        card.dataset.key = myLibrary.indexOf(book);
         cardSection.appendChild(card);
-    
+        deleteButton.addEventListener('click', function(e){
+            e.stopPropagation()
+            deleteBook(e.target.id.charAt(6));
+        });
     })
 }
-refreshLibrary();
 
-const toggleOverlay = () =>{
+function toggleOverlay(){
     if(overlay.classList.contains('hidden')){
         overlay.classList.remove('hidden');
     }else{
@@ -71,10 +69,32 @@ const toggleOverlay = () =>{
     formNumOfPages.value = '';
 }
 
-let formTitle = document.getElementById('title');
-let formAuthor = document.getElementById('author');
-let formNumOfPages = document.getElementById('pages');
-let formReadStatus = document.getElementById('read-status');
+function deleteBook(index){
+    myLibrary.splice(index,1)
+    refreshLibrary();
+}
+
+const myLibrary = [];
+
+addToLibrary('Don Quixote', 'Miguel De Cervantes Saavedra', 1072, false);
+addToLibrary('The Hobbit', 'J. R. R. Tolkien', 300, false);
+addToLibrary('The Lion, the Witch and the Wardrobe', 'C. S. Lewis', 208, true);
+addToLibrary('Title', 'Author', 1, false);
+
+
+const cardSection = document.querySelector('.book-cards');
+
+
+
+
+refreshLibrary();
+
+
+
+const formTitle = document.getElementById('title');
+const formAuthor = document.getElementById('author');
+const formNumOfPages = document.getElementById('pages');
+const formReadStatus = document.getElementById('read-status');
 
 const overlay = document.querySelector('#overlay')
 const addBookButton = document.querySelector('#add-book');
@@ -90,8 +110,7 @@ overlay.addEventListener('click', function(e){
 const bookForm = document.getElementById('add-book-form');
 bookForm.addEventListener('submit', (e) =>{
     e.preventDefault();
-    addToLibrary(formTitle.value, formAuthor.value, formNumOfPages.value, formReadStatus.value)
+    addToLibrary(formTitle.value, formAuthor.value, formNumOfPages.value, formReadStatus.checked)
     refreshLibrary();
-    toggleOverlay();
-    
+    toggleOverlay(); 
 })

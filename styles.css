@@ -62,3 +62,15 @@
 .book-form form input[type='number']{
     width: 50px;
 }
+.btn{
+    width: 120px;
+    align-self: center;
+    border:none;
+    border-radius: 2px;
+    font-size: 16px;
+    padding: 10px;
+}
+.delete-btn{
+    background-color: red;
+    color: white;
+}
