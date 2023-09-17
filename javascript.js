@@ -49,3 +49,21 @@ myLibrary.forEach(book =>{
     cardSection.appendChild(card);
 
 })
+const toggleOverlay = () =>{
+    if(overlay.classList.contains('hidden')){
+        overlay.classList.remove('hidden');
+    }else{
+        overlay.classList.add('hidden')
+    }
+}
+
+const overlay = document.querySelector('#overlay')
+const addBookButton = document.querySelector('#add-book');
+addBookButton.addEventListener('click', toggleOverlay);
+overlay.addEventListener('click', function(e){
+    if(e.target !== this){
+        return;
+    }else{
+        toggleOverlay();
+    }
+});

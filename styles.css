@@ -23,3 +23,27 @@
     flex-direction: column;
     justify-content: space-evenly;
 }
+.overlay{
+    position: fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background-color: rgba(68, 69, 69, 0.351);
+}
+.hidden{
+    display: none;
+}
+.book-form{
+    position:fixed;
+    margin-left: auto;
+    margin-right: auto;
+    left:0;
+    right: 0;
+    margin-top:5%;
+    top:0;
+    width: 40vw;
+    height: 90%;
+    background-color: white;
+    border-radius: 10px;
+}
